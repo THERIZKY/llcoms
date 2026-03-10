@@ -10,7 +10,7 @@ export default function RecentConcertsPage() {
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <section className="space-y-2">
           <h1 className="text-2xl font-semibold">Recent Concerts</h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             Recently added concert events with group and date metadata.
           </p>
         </section>
@@ -20,11 +20,11 @@ export default function RecentConcertsPage() {
             <div key={concert.id} className="space-y-2">
               <ArchiveCard
                 title={concert.title}
-                subtitle={`${concert.eventYear} • ${concert.groupSlug}`}
-                gradient={concert.thumbnail}
+                meta={`${concert.eventYear} • ${concert.groupSlug}`}
+                imageSrc={concert.thumbnail}
                 href={`/concerts/${concert.slug}`}
               />
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-500 dark:text-zinc-300">
                 Date added: {new Date(concert.createdAt).toLocaleDateString("en-US")}
               </p>
             </div>

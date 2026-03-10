@@ -9,7 +9,7 @@ export default function LatestPostsPage() {
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <section className="space-y-2">
           <h1 className="text-2xl font-semibold">Latest Posts</h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             Most recently uploaded concert videos, sorted by upload date.
           </p>
         </section>
@@ -18,14 +18,14 @@ export default function LatestPostsPage() {
           {latestVideos.map((item) => (
             <article
               key={item.id}
-              className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900"
+              className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-700 dark:bg-zinc-800"
             >
               <div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-zinc-500 dark:text-zinc-300">
                   {new Date(item.uploadedAt).toLocaleDateString("en-US")}
                 </p>
                 <h2 className="text-sm font-semibold">{item.title}</h2>
-                <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                <p className="text-xs text-zinc-600 dark:text-zinc-300">
                   {item.concert?.title ?? "Unknown concert"}
                 </p>
               </div>

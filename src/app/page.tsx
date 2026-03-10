@@ -9,21 +9,21 @@ export default function Home() {
   return (
     <main className="px-4 py-8 sm:px-6">
       <div className="mx-auto w-full max-w-6xl space-y-10">
-        <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
           <h1 className="text-2xl font-semibold">Love Live Concert Archive</h1>
-          <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-300">
             Personal streaming-style archive for Love Live concerts. Browse by
             group, open cross-generation events, and watch through Google Drive
             links in a built-in player page.
           </p>
           <div className="mt-4 flex flex-wrap gap-2 text-xs">
-            <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-800">
+            <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-700">
               Groups: {groups.length}
             </span>
-            <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-800">
+            <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-700">
               Concerts: {totalConcerts}
             </span>
-            <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-800">
+            <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-700">
               Source: Google Drive
             </span>
           </div>
@@ -38,8 +38,7 @@ export default function Home() {
               <ArchiveCard
                 key={group.id}
                 title={group.name}
-                subtitle={group.summary}
-                gradient={group.thumbnail}
+                imageSrc={group.thumbnail}
                 href={`/groups/${group.slug}`}
               />
             ))}
@@ -55,8 +54,8 @@ export default function Home() {
               <ArchiveCard
                 key={concert.id}
                 title={concert.title}
-                subtitle={`${concert.eventYear} • ${concert.description}`}
-                gradient={concert.thumbnail}
+                meta={String(concert.eventYear)}
+                imageSrc={concert.thumbnail}
                 href={`/concerts/${concert.slug}`}
               />
             ))}

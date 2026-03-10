@@ -20,7 +20,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <section className="space-y-2">
           <h1 className="text-2xl font-semibold">{group.name}</h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{group.summary}</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">{group.summary}</p>
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -28,8 +28,8 @@ export default async function GroupPage({ params }: GroupPageProps) {
             <ArchiveCard
               key={concert.id}
               title={concert.title}
-              subtitle={`${concert.eventYear} • ${concert.description}`}
-              gradient={concert.thumbnail}
+              meta={String(concert.eventYear)}
+              imageSrc={concert.thumbnail}
               href={`/concerts/${concert.slug}`}
             />
           ))}
