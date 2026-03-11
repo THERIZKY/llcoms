@@ -20,7 +20,7 @@ export async function getAdminDashboardData() {
       },
     }),
     prisma.concert.count(),
-    prisma.video.count(),
+    prisma.concertDisc.count(),
     prisma.streamLike.count(),
     prisma.streamBookmark.count(),
     prisma.user.count({

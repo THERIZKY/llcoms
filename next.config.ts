@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+    /* config options here */
+    reactCompiler: true,
+    images: {
+        remotePatterns: [
+            new URL("https://blogger.googleusercontent.com/img/**"),
+        ],
+    },
 };
 
 export default nextConfig;

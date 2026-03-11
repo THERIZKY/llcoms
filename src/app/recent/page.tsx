@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { ArchiveCard } from "@/components/archive-cards";
 import { GlassPanel } from "@/components/ui/glass-panel";
-import { getGroups, getRecentConcerts } from "@/lib/archive-data";
+import { getRecentConcerts } from "@/lib/archive-data";
 import { formatDateId } from "@/lib/utils";
 
 export default async function RecentConcertsPage() {
-  const [recentConcerts, groups] = await Promise.all([
-    getRecentConcerts(20),
-    getGroups(),
-  ]);
-  const groupNameBySlug = new Map(groups.map((group) => [group.slug, group.name]));
+  const recentConcerts = await getRecentConcerts(20);
 
   return (
     <main className="px-4 py-8 sm:px-6">
@@ -29,14 +25,13 @@ export default async function RecentConcertsPage() {
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {recentConcerts.map((concert) => {
-            const groupLabel =
-              groupNameBySlug.get(concert.groupSlug) ?? "Lintas generasi";
+            const groupLabel = concert.groupName ?? "Cross Generation Concert";
 
             return (
               <div key={concert.id} className="space-y-2">
                 <ArchiveCard
                   title={concert.title}
-                  meta={`${concert.eventYear} - ${groupLabel}`}
+                  meta={`${concert.year} - ${groupLabel}`}
                   imageSrc={concert.thumbnail}
                   href={`/concerts/${concert.slug}`}
                 />

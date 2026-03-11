@@ -74,8 +74,9 @@ model Group {
   id                String    @id
   name              String
   slug              String    @unique
+  description       String
   thumbnail         String
-  summary           String
+  createdAt         DateTime  @default(now())
   accentColor       String?
   sortOrder         Int
   videoSectionOrder Int
@@ -86,38 +87,47 @@ model Group {
 }
 
 model Concert {
-  id                String   @id
+  id                String   @id @default(cuid())
   title             String
   slug              String   @unique
   groupId           String?
   group             Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  thumbnail         String
-  eventYear         Int
-  createdAt         DateTime
+  year              Int
   description       String
-  isCrossGeneration Boolean  @default(false)
-  videos            Video[]
+  thumbnail         String
+  createdAt         DateTime @default(now())
+  discs             ConcertDisc[]
   likes             StreamLike[]
   bookmarks         StreamBookmark[]
 
   @@index([groupId])
   @@index([createdAt])
-  @@index([eventYear])
-  @@index([isCrossGeneration])
+  @@index([year])
 }
 
-model Video {
-  id            String   @id
-  concertId     String
-  concert       Concert  @relation(fields: [concertId], references: [id], onDelete: Cascade)
-  title         String
-  driveFileId   String
-  playlistOrder Int
-  uploadedAt    DateTime
+enum ConcertDiscType {
+  BD
+  DVD
+  Bonus
+}
 
-  @@unique([concertId, playlistOrder])
+model ConcertDisc {
+  id        String          @id @default(cuid())
+  concertId String
+  concert   Concert         @relation(fields: [concertId], references: [id], onDelete: Cascade)
+  title     String
+  slug      String
+  description String
+  driveId   String
+  type      ConcertDiscType
+  sortOrder Int
+  createdAt DateTime        @default(now())
+
+  @@unique([concertId, slug])
+  @@unique([concertId, sortOrder])
   @@index([concertId])
-  @@index([uploadedAt])
+  @@index([createdAt])
+  @@index([type])
 }
 
 model StreamLike {

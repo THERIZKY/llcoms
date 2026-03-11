@@ -24,6 +24,7 @@ type ConcertPlayerProps = {
   loginHref: string;
   canInteract: boolean;
   initialEngagement: StreamEngagementState;
+  initialVideoId?: string;
 };
 
 export function ConcertPlayer({
@@ -37,8 +38,11 @@ export function ConcertPlayer({
   loginHref,
   canInteract,
   initialEngagement,
+  initialVideoId,
 }: ConcertPlayerProps) {
-  const [activeVideoId, setActiveVideoId] = useState(videos[0]?.id ?? "");
+  const [activeVideoId, setActiveVideoId] = useState(
+    initialVideoId ?? videos[0]?.id ?? "",
+  );
   const activeVideoIndex = videos.findIndex((video) => video.id === activeVideoId);
   const activeVideo = useMemo(
     () => videos.find((video) => video.id === activeVideoId) ?? videos[0],
@@ -57,7 +61,7 @@ export function ConcertPlayer({
   const canGoNext = activeVideoIndex < videos.length - 1;
 
   return (
-    <section className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
+    <section className="grid gap-6 xl:grid-cols-[minmax(0,2.25fr)_340px] 2xl:grid-cols-[minmax(0,2.45fr)_360px]">
       <div className="space-y-5">
         <div className="overflow-hidden rounded-[30px] border border-border/70 bg-black shadow-[0_24px_80px_rgba(15,23,42,0.18)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <div className="relative">
@@ -94,8 +98,11 @@ export function ConcertPlayer({
                 <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
                   {concertTitle}
                 </h2>
+                <p className="mt-2 text-sm font-medium text-primary">
+                  {activeVideo.title}
+                </p>
                 <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-                  {concertDescription}
+                  {activeVideo.description || concertDescription}
                 </p>
               </div>
 

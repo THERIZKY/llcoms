@@ -57,9 +57,9 @@ export const adminNavigationSections: AdminNavigationSection[] = [
         icon: Clapperboard,
       },
       {
-        title: "Tambah Playlist",
+        title: "Tambah Video",
         href: "/admin/content/tambah-playlist",
-        description: "Susun playlist dan urutan video.",
+        description: "Tambahkan disc atau item playlist konser.",
         icon: ListMusic,
       },
       {

@@ -58,7 +58,7 @@ const statCards = (stats: AdminDashboardProps["stats"]) => [
   {
     label: "Archive Streams",
     value: stats.concertCount,
-    detail: `${stats.videoCount} total videos`,
+    detail: `${stats.videoCount} total disc streams`,
     icon: DatabaseZap,
     glow: "amber" as const,
   },

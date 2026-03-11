@@ -75,7 +75,7 @@ export default async function Home() {
                             <ArchiveCard
                                 key={concert.id}
                                 title={concert.title}
-                                meta={String(concert.eventYear)}
+                                meta={String(concert.year)}
                                 imageSrc={concert.thumbnail}
                                 href={`/concerts/${concert.slug}`}
                             />
@@ -93,7 +93,7 @@ export default async function Home() {
                                             {group.name}
                                         </h3>
                                         <p className="text-xs text-muted-foreground">
-                                            Tersedia {videos.length} video
+                                            Tersedia {videos.length} stream
                                         </p>
                                     </div>
                                     <Link
@@ -111,7 +111,7 @@ export default async function Home() {
                                             title={video.title}
                                             meta={video.concert.title}
                                             imageSrc={video.concert.thumbnail}
-                                            href={`/concerts/${video.concert.slug}`}
+                                            href={`/concerts/${video.concert.slug}/${video.id}`}
                                             size="compact"
                                         />
                                     ))}

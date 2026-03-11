@@ -14,10 +14,10 @@ export default async function LatestPostsPage() {
             Latest Uploads
           </p>
           <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
-            Video Terbaru
+            Stream Terbaru
           </h1>
           <p className="text-sm leading-7 text-muted-foreground">
-            Daftar video konser yang paling baru diunggah, diurutkan berdasarkan
+            Daftar stream konser yang paling baru diunggah, diurutkan berdasarkan
             tanggal unggah.
           </p>
         </section>
@@ -40,7 +40,7 @@ export default async function LatestPostsPage() {
                 </p>
               </div>
               <Link
-                href={`/concerts/${item.concertSlug}`}
+                href={`/concerts/${item.concertSlug}/${item.id}`}
                 className="rounded-full border border-primary/24 bg-primary/10 px-4 py-2 text-center text-sm font-medium text-foreground transition hover:bg-primary/14"
               >
                 Tonton

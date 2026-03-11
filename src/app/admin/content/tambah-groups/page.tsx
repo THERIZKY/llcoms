@@ -42,7 +42,7 @@ export default function AdminTambahGroupsPage() {
         },
         {
           label: "Ringkasan grup",
-          name: "summary",
+          name: "description",
           icon: Users,
           kind: "textarea",
           placeholder: "Deskripsi singkat karakter panggung, nuansa visual, dan posisi grup di archive.",
@@ -53,7 +53,7 @@ export default function AdminTambahGroupsPage() {
         {
           title: "Brand consistency",
           description:
-            "Accent color dan summary disatukan agar tampilan publik bisa tetap konsisten saat group baru ditambahkan.",
+            "Accent color dan deskripsi grup disatukan agar tampilan publik bisa tetap konsisten saat group baru ditambahkan.",
         },
         {
           title: "Archive ordering",
