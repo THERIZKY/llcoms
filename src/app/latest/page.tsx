@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { getLatestVideos } from "@/lib/archive-data";
+import { formatDateId } from "@/lib/utils";
 
-export default function LatestPostsPage() {
-  const latestVideos = getLatestVideos(20);
+export default async function LatestPostsPage() {
+  const latestVideos = await getLatestVideos(20);
 
   return (
     <main className="px-4 py-8 sm:px-6">
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <section className="space-y-2">
-          <h1 className="text-2xl font-semibold">Latest Posts</h1>
+          <h1 className="text-2xl font-semibold">Video Terbaru</h1>
           <p className="text-sm text-zinc-600 dark:text-zinc-300">
-            Most recently uploaded concert videos, sorted by upload date.
+            Daftar video konser yang paling baru diunggah, diurutkan berdasarkan
+            tanggal unggah.
           </p>
         </section>
 
@@ -22,18 +24,18 @@ export default function LatestPostsPage() {
             >
               <div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-300">
-                  {new Date(item.uploadedAt).toLocaleDateString("en-US")}
+                  {formatDateId(item.uploadedAt)}
                 </p>
                 <h2 className="text-sm font-semibold">{item.title}</h2>
                 <p className="text-xs text-zinc-600 dark:text-zinc-300">
-                  {item.concert?.title ?? "Unknown concert"}
+                  {item.concert?.title ?? "Konser tidak dikenal"}
                 </p>
               </div>
               <Link
                 href={`/concerts/${item.concertSlug}`}
                 className="rounded-md bg-zinc-900 px-3 py-2 text-center text-sm font-medium text-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
               >
-                Watch
+                Tonton
               </Link>
             </article>
           ))}

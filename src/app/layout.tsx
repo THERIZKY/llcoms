@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Love Live Concert Archive",
-  description: "Personal streaming-style archive for Love Live concert recordings.",
+  title: "Arsip Konser Love Live",
+  description: "Arsip konser Love Live bergaya streaming untuk koleksi pribadi.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

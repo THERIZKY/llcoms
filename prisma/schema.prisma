@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+model User {
+  id            String           @id @default(cuid())
+  name          String?
+  email         String           @unique
+  password      String?
+  role          UserRole         @default(user)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  likes         StreamLike[]
+  bookmarks     StreamBookmark[]
+
+  @@index([role])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Group {
+  id                String    @id
+  name              String
+  slug              String    @unique
+  thumbnail         String
+  summary           String
+  accentColor       String?
+  sortOrder         Int
+  videoSectionOrder Int
+  concerts          Concert[]
+
+  @@index([sortOrder])
+  @@index([videoSectionOrder])
+}
+
+model Concert {
+  id                String   @id
+  title             String
+  slug              String   @unique
+  groupId           String?
+  group             Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  thumbnail         String
+  eventYear         Int
+  createdAt         DateTime
+  description       String
+  isCrossGeneration Boolean  @default(false)
+  videos            Video[]
+  likes             StreamLike[]
+  bookmarks         StreamBookmark[]
+
+  @@index([groupId])
+  @@index([createdAt])
+  @@index([eventYear])
+  @@index([isCrossGeneration])
+}
+
+model Video {
+  id            String   @id
+  concertId     String
+  concert       Concert  @relation(fields: [concertId], references: [id], onDelete: Cascade)
+  title         String
+  driveFileId   String
+  playlistOrder Int
+  uploadedAt    DateTime
+
+  @@unique([concertId, playlistOrder])
+  @@index([concertId])
+  @@index([uploadedAt])
+}
+
+model StreamLike {
+  id        String   @id @default(cuid())
+  userId    String
+  concertId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concert   Concert  @relation(fields: [concertId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, concertId])
+  @@index([concertId])
+  @@index([userId])
+}
+
+model StreamBookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  concertId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  concert   Concert  @relation(fields: [concertId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, concertId])
+  @@index([concertId])
+  @@index([userId])
+}
