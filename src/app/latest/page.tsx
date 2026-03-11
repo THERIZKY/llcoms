@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getLatestVideos } from "@/lib/archive-data";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { formatDateId } from "@/lib/utils";
 
 export default async function LatestPostsPage() {
@@ -9,8 +10,13 @@ export default async function LatestPostsPage() {
     <main className="px-4 py-8 sm:px-6">
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <section className="space-y-2">
-          <h1 className="text-2xl font-semibold">Video Terbaru</h1>
-          <p className="text-sm text-zinc-600 dark:text-zinc-300">
+          <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-primary">
+            Latest Uploads
+          </p>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground">
+            Video Terbaru
+          </h1>
+          <p className="text-sm leading-7 text-muted-foreground">
             Daftar video konser yang paling baru diunggah, diurutkan berdasarkan
             tanggal unggah.
           </p>
@@ -18,26 +24,28 @@ export default async function LatestPostsPage() {
 
         <section className="grid gap-3">
           {latestVideos.map((item) => (
-            <article
+            <GlassPanel
               key={item.id}
-              className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-700 dark:bg-zinc-800"
+              className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
-                <p className="text-xs text-zinc-500 dark:text-zinc-300">
+                <p className="text-xs text-muted-foreground">
                   {formatDateId(item.uploadedAt)}
                 </p>
-                <h2 className="text-sm font-semibold">{item.title}</h2>
-                <p className="text-xs text-zinc-600 dark:text-zinc-300">
+                <h2 className="mt-1 text-sm font-semibold text-foreground">
+                  {item.title}
+                </h2>
+                <p className="text-xs text-muted-foreground">
                   {item.concert?.title ?? "Konser tidak dikenal"}
                 </p>
               </div>
               <Link
                 href={`/concerts/${item.concertSlug}`}
-                className="rounded-md bg-zinc-900 px-3 py-2 text-center text-sm font-medium text-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
+                className="rounded-full border border-primary/24 bg-primary/10 px-4 py-2 text-center text-sm font-medium text-foreground transition hover:bg-primary/14"
               >
                 Tonton
               </Link>
-            </article>
+            </GlassPanel>
           ))}
         </section>
       </div>

@@ -47,7 +47,7 @@ export function ConcertPlayer({
 
   if (!activeVideo) {
     return (
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 text-sm text-zinc-300">
+      <div className="rounded-[28px] border border-border/70 bg-card/75 p-6 text-sm text-muted-foreground backdrop-blur-xl">
         Belum ada video untuk konser ini.
       </div>
     );
@@ -59,7 +59,7 @@ export function ConcertPlayer({
   return (
     <section className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
       <div className="space-y-5">
-        <div className="overflow-hidden rounded-[30px] border border-white/10 bg-black shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
+        <div className="overflow-hidden rounded-[30px] border border-border/70 bg-black shadow-[0_24px_80px_rgba(15,23,42,0.18)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <div className="relative">
             <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,transparent_18%,transparent_82%,rgba(0,0,0,0.24)_100%)]" />
             <iframe
@@ -74,34 +74,34 @@ export function ConcertPlayer({
 
         <div
           id="details"
-          className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.28)]"
+          className="rounded-[28px] border border-border/70 bg-card/75 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.1)] backdrop-blur-2xl dark:shadow-[0_18px_60px_rgba(0,0,0,0.32)]"
         >
           <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
-                <span className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-zinc-200">
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground">
+                <span className="rounded-full border border-primary/18 bg-primary/10 px-3 py-1 text-foreground">
                   Stream Info
                 </span>
-                <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1">
+                <span className="rounded-full border border-border/70 bg-background/65 px-3 py-1 text-foreground">
                   {groupLabel}
                 </span>
-                <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1">
+                <span className="rounded-full border border-border/70 bg-background/65 px-3 py-1 text-foreground">
                   {eventYear}
                 </span>
               </div>
 
               <div>
-                <h2 className="text-2xl font-semibold tracking-tight text-white">
+                <h2 className="font-display text-2xl font-semibold tracking-tight text-foreground">
                   {concertTitle}
                 </h2>
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
                   {concertDescription}
                 </p>
               </div>
 
               <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="relative h-14 w-14 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                  <div className="relative h-14 w-14 overflow-hidden rounded-2xl border border-border/70 bg-background/70">
                     <Image
                       src={thumbnailSrc}
                       alt={groupLabel}
@@ -112,20 +112,20 @@ export function ConcertPlayer({
                     <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/35" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white">{groupLabel}</p>
-                    <p className="text-xs text-zinc-400">
+                    <p className="text-sm font-semibold text-foreground">{groupLabel}</p>
+                    <p className="text-xs text-muted-foreground">
                       Private concert archive channel
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 text-xs text-zinc-300">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2">
-                    <Users className="size-3.5 text-zinc-400" />
+                <div className="flex flex-wrap gap-2 text-xs text-foreground">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/65 px-3 py-2">
+                    <Users className="size-3.5 text-muted-foreground" />
                     Private viewers
                   </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-3 py-2">
-                    <ListVideo className="size-3.5 text-zinc-400" />
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/65 px-3 py-2">
+                    <ListVideo className="size-3.5 text-muted-foreground" />
                     {videos.length} video
                   </span>
                 </div>
@@ -147,16 +147,16 @@ export function ConcertPlayer({
       <div className="xl:sticky xl:top-24 xl:self-start">
         <div
           id="playlist"
-          className="rounded-[26px] border border-white/10 bg-white/[0.04] p-4 shadow-[0_16px_48px_rgba(0,0,0,0.24)]"
+          className="rounded-[26px] border border-border/70 bg-card/75 p-4 shadow-[0_16px_48px_rgba(15,23,42,0.1)] backdrop-blur-2xl dark:shadow-[0_16px_48px_rgba(0,0,0,0.3)]"
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <span className="inline-flex size-10 items-center justify-center rounded-2xl bg-rose-500/12 text-rose-200">
+              <span className="inline-flex size-10 items-center justify-center rounded-2xl border border-primary/18 bg-primary/10 text-primary">
                 <ListVideo className="size-4" />
               </span>
               <div>
-                <h3 className="text-sm font-semibold text-white">Daftar Video</h3>
-                <p className="text-xs text-zinc-400">
+                <h3 className="text-sm font-semibold text-foreground">Daftar Video</h3>
+                <p className="text-xs text-muted-foreground">
                   Video {activeVideoIndex + 1} dari {videos.length}
                 </p>
               </div>
@@ -169,7 +169,7 @@ export function ConcertPlayer({
                   canGoPrev ? setActiveVideoId(videos[activeVideoIndex - 1].id) : undefined
                 }
                 disabled={!canGoPrev}
-                className="inline-flex size-9 items-center justify-center rounded-full border border-white/10 bg-black/25 text-zinc-300 transition hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                className="inline-flex size-9 items-center justify-center rounded-full border border-border/70 bg-background/70 text-muted-foreground transition hover:bg-background hover:text-foreground disabled:cursor-not-allowed disabled:opacity-35"
                 aria-label="Video sebelumnya"
               >
                 <ChevronLeft className="size-4" />
@@ -180,7 +180,7 @@ export function ConcertPlayer({
                   canGoNext ? setActiveVideoId(videos[activeVideoIndex + 1].id) : undefined
                 }
                 disabled={!canGoNext}
-                className="inline-flex size-9 items-center justify-center rounded-full border border-white/10 bg-black/25 text-zinc-300 transition hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                className="inline-flex size-9 items-center justify-center rounded-full border border-border/70 bg-background/70 text-muted-foreground transition hover:bg-background hover:text-foreground disabled:cursor-not-allowed disabled:opacity-35"
                 aria-label="Video berikutnya"
               >
                 <ChevronRight className="size-4" />
@@ -199,22 +199,22 @@ export function ConcertPlayer({
                   onClick={() => setActiveVideoId(video.id)}
                   className={`flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left transition ${
                     isActive
-                      ? "border-rose-400/35 bg-rose-500/12 text-white shadow-[0_10px_30px_rgba(244,63,94,0.14)]"
-                      : "border-white/8 bg-black/20 text-zinc-200 hover:border-white/15 hover:bg-white/[0.06]"
+                      ? "border-primary/30 bg-primary/12 text-foreground shadow-[0_10px_30px_rgba(96,165,250,0.18)]"
+                      : "border-border/60 bg-background/60 text-foreground hover:border-border/90 hover:bg-background/78"
                   }`}
                 >
                   <span
                     className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
                       isActive
-                        ? "bg-white text-zinc-950"
-                        : "bg-white/10 text-zinc-300"
+                        ? "bg-foreground text-background"
+                        : "bg-secondary text-muted-foreground"
                     }`}
                   >
                     {idx + 1}
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium">{video.title}</p>
-                    <div className="mt-1 flex items-center gap-2 text-[11px] text-zinc-400">
+                    <div className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground">
                       <Play className="size-3" />
                       <span>{isActive ? "Sedang diputar" : `Bagian ${video.order}`}</span>
                     </div>

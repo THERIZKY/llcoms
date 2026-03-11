@@ -130,8 +130,8 @@ export function StreamEngagementControls({
           disabled={!canInteract || state.viewerHasLiked || isPending}
           className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition ${
             state.viewerHasLiked
-              ? "border-rose-300/30 bg-rose-500/14 text-rose-100"
-              : "border-white/10 bg-white/[0.06] text-white hover:bg-white/[0.1]"
+              ? "border-rose-400/30 bg-rose-500/14 text-rose-700 dark:text-rose-100"
+              : "border-border/70 bg-background/70 text-foreground hover:bg-background"
           } disabled:cursor-not-allowed disabled:opacity-70`}
         >
           {isPending && pendingAction === "like" ? (
@@ -140,7 +140,7 @@ export function StreamEngagementControls({
             <Heart className="size-4" />
           )}
           {state.viewerHasLiked ? "Liked" : "Like"}
-          <span className="rounded-full bg-black/20 px-2 py-0.5 text-[11px] text-zinc-200">
+          <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-foreground">
             {state.likeCount}
           </span>
         </button>
@@ -151,8 +151,8 @@ export function StreamEngagementControls({
           disabled={!canInteract || isPending}
           className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition ${
             state.viewerHasBookmarked
-              ? "border-sky-300/30 bg-sky-500/14 text-sky-100"
-              : "border-white/10 bg-white/[0.06] text-white hover:bg-white/[0.1]"
+              ? "border-sky-400/30 bg-sky-500/14 text-sky-700 dark:text-sky-100"
+              : "border-border/70 bg-background/70 text-foreground hover:bg-background"
           } disabled:cursor-not-allowed disabled:opacity-70`}
         >
           {isPending && pendingAction === "bookmark" ? (
@@ -161,22 +161,22 @@ export function StreamEngagementControls({
             <Bookmark className="size-4" />
           )}
           {state.viewerHasBookmarked ? "Bookmarked" : "Bookmark"}
-          <span className="rounded-full bg-black/20 px-2 py-0.5 text-[11px] text-zinc-200">
+          <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-foreground">
             {state.bookmarkCount}
           </span>
         </button>
       </div>
 
       {!canInteract ? (
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           Login diperlukan untuk menyukai dan menyimpan stream.{" "}
-          <Link href={loginHref} className="text-rose-200 transition hover:text-white">
+          <Link href={loginHref} className="text-primary transition hover:text-foreground">
             Masuk sekarang
           </Link>
         </p>
       ) : null}
 
-      {error ? <p className="text-sm text-rose-200">{error}</p> : null}
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
     </div>
   );
 }

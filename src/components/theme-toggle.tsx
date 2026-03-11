@@ -6,18 +6,32 @@ import { Button } from "@/components/ui/button";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  const currentTheme = resolvedTheme === "light" ? "light" : "dark";
 
   return (
-    <Button
-      variant="outline"
-      size="icon-sm"
-      className="rounded-full border-white/10 bg-white/5 text-zinc-100 hover:bg-white/10 hover:text-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:hover:bg-white/10"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      aria-label="Toggle theme"
-      title="Toggle theme"
-    >
-      <Sun className="hidden size-4 dark:block" />
-      <Moon className="size-4 dark:hidden" />
-    </Button>
+    <div className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-card/75 p-1 backdrop-blur-xl">
+      <Button
+        variant={currentTheme === "light" ? "soft" : "ghost"}
+        size="sm"
+        className="rounded-full px-3"
+        onClick={() => setTheme("light")}
+        aria-label="Use light mode"
+        title="Use light mode"
+      >
+        <Sun className="size-4" />
+        <span className="hidden sm:inline">Light</span>
+      </Button>
+      <Button
+        variant={currentTheme === "dark" ? "neon" : "ghost"}
+        size="sm"
+        className="rounded-full px-3"
+        onClick={() => setTheme("dark")}
+        aria-label="Use dark mode"
+        title="Use dark mode"
+      >
+        <Moon className="size-4" />
+        <span className="hidden sm:inline">Dark</span>
+      </Button>
+    </div>
   );
 }

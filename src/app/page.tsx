@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArchiveCard } from "@/components/archive-cards";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import {
     getConcertCount,
     getCrossGenerationConcerts,
@@ -19,32 +20,35 @@ export default async function Home() {
     return (
         <main className="px-4 py-8 sm:px-6">
             <div className="mx-auto w-full max-w-6xl space-y-10">
-                <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
-                    <h1 className="text-2xl font-semibold">
+                <GlassPanel glow="cyan" className="p-6 sm:p-8">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-primary">
+                        Archive Overview
+                    </p>
+                    <h1 className="font-display mt-4 text-3xl font-semibold tracking-tight text-foreground">
                         Arsip Konser Love Live
                     </h1>
-                    <p className="mt-2 max-w-2xl text-sm text-zinc-600 dark:text-zinc-300">
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
                         Arsip konser Love Live dengan tampilan bergaya
                         streaming. Jelajahi berdasarkan grup, buka konser lintas
                         generasi, lalu tonton lewat Google Drive di halaman
                         player bawaan.
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                        <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-700">
+                        <span className="rounded-full border border-border/70 bg-background/70 px-3 py-1.5 text-foreground">
                             Grup: {groups.length}
                         </span>
-                        <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-700">
+                        <span className="rounded-full border border-border/70 bg-background/70 px-3 py-1.5 text-foreground">
                             Konser: {totalConcerts}
                         </span>
-                        <span className="rounded-full bg-zinc-100 px-2.5 py-1 dark:bg-zinc-700">
+                        <span className="rounded-full border border-border/70 bg-background/70 px-3 py-1.5 text-foreground">
                             Sumber: Google Drive
                         </span>
                     </div>
-                </section>
+                </GlassPanel>
 
                 <section className="space-y-4">
                     <div className="flex items-end justify-between">
-                        <h2 className="text-lg font-semibold">
+                        <h2 className="font-display text-lg font-semibold text-foreground">
                             Konser Berdasarkan Grup
                         </h2>
                     </div>
@@ -62,7 +66,7 @@ export default async function Home() {
 
                 <section className="space-y-4">
                     <div className="flex items-end justify-between">
-                        <h2 className="text-lg font-semibold">
+                        <h2 className="font-display text-lg font-semibold text-foreground">
                             Konser Lintas Generasi
                         </h2>
                     </div>
@@ -85,16 +89,16 @@ export default async function Home() {
                             <section key={group.id} className="space-y-3">
                                 <div className="flex items-end justify-between gap-3">
                                     <div>
-                                        <h3 className="text-base font-semibold">
+                                        <h3 className="font-display text-base font-semibold text-foreground">
                                             {group.name}
                                         </h3>
-                                        <p className="text-xs text-zinc-500 dark:text-zinc-300">
+                                        <p className="text-xs text-muted-foreground">
                                             Tersedia {videos.length} video
                                         </p>
                                     </div>
                                     <Link
                                         href={`/groups/${group.slug}`}
-                                        className="text-sm font-medium text-zinc-700 underline underline-offset-4 dark:text-zinc-300"
+                                        className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground"
                                     >
                                         Buka halaman grup
                                     </Link>

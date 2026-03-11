@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, CheckCircle2, MailCheck } from "lucide-react";
 import { AuthShell } from "@/components/auth/auth-shell";
+import { GlassPanel } from "@/components/ui/glass-panel";
 import { verifyEmailAddress } from "@/auth/verification";
 
 type VerifyEmailPageProps = {
@@ -28,26 +29,32 @@ function StatusCard({
 }) {
   const toneClasses =
     tone === "success"
-      ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-100"
+      ? "border-emerald-400/30 bg-emerald-400/10"
       : tone === "warning"
-        ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
-        : "border-white/10 bg-white/[0.03] text-zinc-200";
+        ? "border-amber-300/30 bg-amber-300/10"
+        : "border-border/70 bg-card/70";
 
   return (
-    <div className={`rounded-[28px] border p-6 ${toneClasses}`}>
-      <div className="inline-flex size-12 items-center justify-center rounded-2xl border border-white/10 bg-black/20">
+    <GlassPanel
+      className={`p-6 ${toneClasses}`}
+      glow={tone === "success" ? "emerald" : tone === "warning" ? "amber" : "cyan"}
+      tone={tone === "neutral" ? "default" : "elevated"}
+    >
+      <div className="inline-flex size-12 items-center justify-center rounded-2xl border border-border/70 bg-background/70 text-primary">
         {icon}
       </div>
-      <h2 className="mt-4 text-2xl font-semibold text-white">{title}</h2>
-      <p className="mt-3 text-sm leading-7 text-current/85">{description}</p>
+      <h2 className="font-display mt-4 text-2xl font-semibold text-foreground">
+        {title}
+      </h2>
+      <p className="mt-3 text-sm leading-7 text-muted-foreground">{description}</p>
       <Link
         href={href}
-        className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white transition hover:text-zinc-200"
+        className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary transition hover:text-foreground"
       >
         {hrefLabel}
         <ArrowRight className="size-4" />
       </Link>
-    </div>
+    </GlassPanel>
   );
 }
 
