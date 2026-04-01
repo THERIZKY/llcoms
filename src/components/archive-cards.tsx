@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type CardProps = {
   title: string;
@@ -20,6 +21,7 @@ export function ArchiveCard({
   meta,
   size = "default",
 }: CardProps) {
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const [hasImageError, setHasImageError] = useState(false);
   const isCompact = size === "compact";
 
@@ -34,6 +36,11 @@ export function ArchiveCard({
             isCompact ? "h-24" : "h-32"
           }`}
         >
+          {isImageLoading ? (
+            <div className="absolute inset-0 z-10">
+              <Skeleton className="h-full w-full rounded-none" />
+            </div>
+          ) : null}
           {hasImageError ? (
             <div className="flex h-full items-center justify-center text-xs font-medium text-muted-foreground">
               Sampul
@@ -45,7 +52,11 @@ export function ArchiveCard({
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              onError={() => setHasImageError(true)}
+              onError={() => {
+                setHasImageError(true);
+                setIsImageLoading(false);
+              }}
+              onLoad={() => setIsImageLoading(false)}
             />
           )}
         </div>

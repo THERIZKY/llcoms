@@ -1,10 +1,14 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
 import { requireAdminUser } from "@/auth/session";
 import type { AdminContentActionState } from "@/app/admin/content/action-state";
 import { ConcertDiscType } from "@/generated/prisma/enums";
+import {
+  getConcertMutationTags,
+  getVideoMutationTags,
+} from "@/lib/archive-cache";
 import { extractDriveFileId } from "@/lib/google-drive";
 import { prisma } from "@/lib/prisma";
 import { appendSlugSuffix, slugify } from "@/lib/slug";
@@ -98,24 +102,17 @@ async function getUniqueVideoSlug(concertId: string, title: string) {
 }
 
 function revalidateArchivePaths({
-  concertSlug,
-  groupSlug,
+  tags,
 }: {
-  concertSlug?: string;
-  groupSlug?: string;
+  tags: string[];
 }) {
+  for (const tag of tags) {
+    updateTag(tag);
+  }
+
   revalidatePath("/admin");
-  revalidatePath("/");
-  revalidatePath("/recent");
-  revalidatePath("/latest");
-
-  if (groupSlug) {
-    revalidatePath(`/groups/${groupSlug}`);
-  }
-
-  if (concertSlug) {
-    revalidatePath(`/concerts/${concertSlug}`);
-  }
+  revalidatePath("/admin/content/tambah-konser");
+  revalidatePath("/admin/content/tambah-playlist");
 }
 
 export async function createConcertAction(
@@ -177,8 +174,9 @@ export async function createConcertAction(
   });
 
   revalidateArchivePaths({
-    concertSlug: concert.slug,
-    groupSlug: group?.slug,
+    tags: getConcertMutationTags({
+      groupSlug: group?.slug,
+    }),
   });
 
   return {
@@ -278,8 +276,10 @@ export async function createConcertVideoAction(
   });
 
   revalidateArchivePaths({
-    concertSlug: concert.slug,
-    groupSlug: concert.group?.slug,
+    tags: getVideoMutationTags({
+      concertSlug: concert.slug,
+      groupSlug: concert.group?.slug,
+    }),
   });
 
   return {

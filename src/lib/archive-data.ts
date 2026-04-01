@@ -1,5 +1,5 @@
 import "server-only";
-import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import type {
   Concert,
   ConcertDisc,
@@ -7,6 +7,14 @@ import type {
   GroupVideoSection,
   Video,
 } from "@/lib/archive-types";
+import {
+  archiveCacheProfiles,
+  archiveCacheTags,
+  getConcertDiscsTag,
+  getConcertTag,
+  getGroupConcertsTag,
+  getGroupTag,
+} from "@/lib/archive-cache";
 import { buildDrivePreviewUrl } from "@/lib/google-drive";
 import { prisma } from "@/lib/prisma";
 
@@ -110,7 +118,21 @@ function mapVideo(disc: ConcertDiscRecord, fallbackConcertSlug?: string): Video 
   };
 }
 
-export const getGroups = cache(async () => {
+function cacheCatalogData(...tags: string[]) {
+  cacheLife(archiveCacheProfiles.catalog);
+  cacheTag(archiveCacheTags.archive, ...tags);
+}
+
+function cacheFeedData(...tags: string[]) {
+  cacheLife(archiveCacheProfiles.feed);
+  cacheTag(archiveCacheTags.archive, ...tags);
+}
+
+export async function getGroups() {
+  "use cache";
+
+  cacheCatalogData(archiveCacheTags.groups);
+
   const groups = await prisma.group.findMany({
     orderBy: {
       sortOrder: "asc",
@@ -127,9 +149,13 @@ export const getGroups = cache(async () => {
   });
 
   return groups.map(mapGroup);
-});
+}
 
-export const getGroupBySlug = cache(async (slug: string) => {
+export async function getGroupBySlug(slug: string) {
+  "use cache";
+
+  cacheCatalogData(archiveCacheTags.groups, getGroupTag(slug));
+
   const group = await prisma.group.findUnique({
     where: {
       slug,
@@ -146,11 +172,21 @@ export const getGroupBySlug = cache(async (slug: string) => {
   });
 
   return group ? mapGroup(group) : undefined;
-});
+}
 
-export const getConcertCount = cache(async () => prisma.concert.count());
+export async function getConcertCount() {
+  "use cache";
 
-export const getConcertBySlug = cache(async (slug: string) => {
+  cacheFeedData(archiveCacheTags.concerts);
+
+  return prisma.concert.count();
+}
+
+export async function getConcertBySlug(slug: string) {
+  "use cache";
+
+  cacheCatalogData(archiveCacheTags.concerts, getConcertTag(slug));
+
   const concert = await prisma.concert.findUnique({
     where: {
       slug,
@@ -173,9 +209,13 @@ export const getConcertBySlug = cache(async (slug: string) => {
   });
 
   return concert ? mapConcert(concert) : undefined;
-});
+}
 
-export const getConcertsByGroup = cache(async (slug: string) => {
+export async function getConcertsByGroup(slug: string) {
+  "use cache";
+
+  cacheCatalogData(archiveCacheTags.concerts, getGroupConcertsTag(slug));
+
   const concerts = await prisma.concert.findMany({
     where: {
       group: {
@@ -201,9 +241,16 @@ export const getConcertsByGroup = cache(async (slug: string) => {
   });
 
   return concerts.map(mapConcert);
-});
+}
 
-export const getCrossGenerationConcerts = cache(async () => {
+export async function getCrossGenerationConcerts() {
+  "use cache";
+
+  cacheCatalogData(
+    archiveCacheTags.concerts,
+    archiveCacheTags.crossGeneration,
+  );
+
   const concerts = await prisma.concert.findMany({
     where: {
       groupId: null,
@@ -227,9 +274,13 @@ export const getCrossGenerationConcerts = cache(async () => {
   });
 
   return concerts.map(mapConcert);
-});
+}
 
-export const getRecentConcerts = cache(async (limit = 12) => {
+export async function getRecentConcerts(limit = 12) {
+  "use cache";
+
+  cacheFeedData(archiveCacheTags.concerts, archiveCacheTags.recentConcerts);
+
   const concerts = await prisma.concert.findMany({
     take: limit,
     orderBy: {
@@ -253,9 +304,16 @@ export const getRecentConcerts = cache(async (limit = 12) => {
   });
 
   return concerts.map(mapConcert);
-});
+}
 
-export const getConcertOptions = cache(async () => {
+export async function getConcertOptions() {
+  "use cache";
+
+  cacheCatalogData(
+    archiveCacheTags.concerts,
+    archiveCacheTags.concertOptions,
+  );
+
   const concerts = await prisma.concert.findMany({
     orderBy: [{ title: "asc" }],
     select: {
@@ -276,9 +334,17 @@ export const getConcertOptions = cache(async () => {
   });
 
   return concerts.map(mapConcert);
-});
+}
 
-export const getConcertDiscsByConcertSlug = cache(async (concertSlug: string) => {
+export async function getConcertDiscsByConcertSlug(concertSlug: string) {
+  "use cache";
+
+  cacheCatalogData(
+    archiveCacheTags.videos,
+    getConcertTag(concertSlug),
+    getConcertDiscsTag(concertSlug),
+  );
+
   const discs = await prisma.concertDisc.findMany({
     where: {
       concert: {
@@ -307,85 +373,95 @@ export const getConcertDiscsByConcertSlug = cache(async (concertSlug: string) =>
   });
 
   return discs.map((disc) => mapConcertDisc(disc, concertSlug));
-});
+}
 
-export const getConcertDiscById = cache(
-  async (concertSlug: string, discId: string) => {
-    const disc = await prisma.concertDisc.findFirst({
-      where: {
-        id: discId,
-        concert: {
-          slug: concertSlug,
-        },
+export async function getConcertDiscById(concertSlug: string, discId: string) {
+  "use cache";
+
+  cacheCatalogData(
+    archiveCacheTags.videos,
+    getConcertTag(concertSlug),
+    getConcertDiscsTag(concertSlug),
+  );
+
+  const disc = await prisma.concertDisc.findFirst({
+    where: {
+      id: discId,
+      concert: {
+        slug: concertSlug,
       },
-      select: {
-        id: true,
-        concertId: true,
-        title: true,
-        slug: true,
-        description: true,
-        driveId: true,
-        type: true,
-        sortOrder: true,
-        createdAt: true,
-        concert: {
-          select: {
-            id: true,
-            title: true,
-            slug: true,
-            thumbnail: true,
-            year: true,
-            createdAt: true,
-            description: true,
-            group: {
-              select: {
-                slug: true,
-                name: true,
-              },
+    },
+    select: {
+      id: true,
+      concertId: true,
+      title: true,
+      slug: true,
+      description: true,
+      driveId: true,
+      type: true,
+      sortOrder: true,
+      createdAt: true,
+      concert: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          thumbnail: true,
+          year: true,
+          createdAt: true,
+          description: true,
+          group: {
+            select: {
+              slug: true,
+              name: true,
             },
           },
         },
       },
-    });
+    },
+  });
 
-    if (!disc) {
-      return undefined;
-    }
+  if (!disc) {
+    return undefined;
+  }
 
-    const concertDiscs = await prisma.concertDisc.findMany({
-      where: {
-        concertId: disc.concert.id,
-      },
-      orderBy: {
-        sortOrder: "asc",
-      },
-      select: {
-        id: true,
-        concertId: true,
-        title: true,
-        slug: true,
-        description: true,
-        driveId: true,
-        type: true,
-        sortOrder: true,
-        createdAt: true,
-        concert: {
-          select: {
-            slug: true,
-          },
+  const concertDiscs = await prisma.concertDisc.findMany({
+    where: {
+      concertId: disc.concert.id,
+    },
+    orderBy: {
+      sortOrder: "asc",
+    },
+    select: {
+      id: true,
+      concertId: true,
+      title: true,
+      slug: true,
+      description: true,
+      driveId: true,
+      type: true,
+      sortOrder: true,
+      createdAt: true,
+      concert: {
+        select: {
+          slug: true,
         },
       },
-    });
+    },
+  });
 
-    return {
-      disc: mapConcertDisc(disc, concertSlug),
-      concert: mapConcert(disc.concert),
-      videos: concertDiscs.map((item) => mapVideo(item, concertSlug)),
-    };
-  },
-);
+  return {
+    disc: mapConcertDisc(disc, concertSlug),
+    concert: mapConcert(disc.concert),
+    videos: concertDiscs.map((item) => mapVideo(item, concertSlug)),
+  };
+}
 
-export const getLatestVideos = cache(async (limit = 12) => {
+export async function getLatestVideos(limit = 12) {
+  "use cache";
+
+  cacheFeedData(archiveCacheTags.videos, archiveCacheTags.latestVideos);
+
   const discs = await prisma.concertDisc.findMany({
     take: limit,
     orderBy: {
@@ -425,9 +501,13 @@ export const getLatestVideos = cache(async (limit = 12) => {
     ...mapVideo(disc),
     concert: mapConcert(disc.concert),
   }));
-});
+}
 
-export const getVideosGroupedByGroup = cache(async (limitPerGroup?: number) => {
+export async function getVideosGroupedByGroup(limitPerGroup?: number) {
+  "use cache";
+
+  cacheFeedData(archiveCacheTags.videos, archiveCacheTags.groupedVideos);
+
   const [groups, discs] = await Promise.all([
     prisma.group.findMany({
       orderBy: {
@@ -517,6 +597,6 @@ export const getVideosGroupedByGroup = cache(async (limitPerGroup?: number) => {
           ? section.videos.slice(0, limitPerGroup)
           : section.videos,
     }));
-});
+}
 
 export type { Concert, ConcertDisc, Group, GroupVideoSection, Video };

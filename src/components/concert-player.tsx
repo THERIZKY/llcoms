@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { Video } from "@/lib/archive-types";
 import { StreamEngagementControls } from "@/components/stream/stream-engagement-controls";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { StreamEngagementState } from "@/types/stream";
 
 type ConcertPlayerProps = {
@@ -43,6 +44,7 @@ export function ConcertPlayer({
   const [activeVideoId, setActiveVideoId] = useState(
     initialVideoId ?? videos[0]?.id ?? "",
   );
+  const [loadedVideoId, setLoadedVideoId] = useState<string | null>(null);
   const activeVideoIndex = videos.findIndex((video) => video.id === activeVideoId);
   const activeVideo = useMemo(
     () => videos.find((video) => video.id === activeVideoId) ?? videos[0],
@@ -59,6 +61,7 @@ export function ConcertPlayer({
 
   const canGoPrev = activeVideoIndex > 0;
   const canGoNext = activeVideoIndex < videos.length - 1;
+  const isFrameLoading = loadedVideoId !== activeVideo.id;
 
   return (
     <section className="grid gap-6 xl:grid-cols-[minmax(0,2.25fr)_340px] 2xl:grid-cols-[minmax(0,2.45fr)_360px]">
@@ -66,12 +69,23 @@ export function ConcertPlayer({
         <div className="overflow-hidden rounded-[30px] border border-border/70 bg-black shadow-[0_24px_80px_rgba(15,23,42,0.18)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <div className="relative">
             <div className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,transparent_18%,transparent_82%,rgba(0,0,0,0.24)_100%)]" />
+            {isFrameLoading ? (
+              <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/65 backdrop-blur-sm">
+                <div className="space-y-3 text-center">
+                  <Skeleton className="mx-auto h-14 w-14 rounded-full bg-slate-800" />
+                  <p className="text-sm font-medium text-slate-100">
+                    Menyiapkan media player...
+                  </p>
+                </div>
+              </div>
+            ) : null}
             <iframe
               src={activeVideo.driveUrl}
               title={activeVideo.title}
               allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               allowFullScreen
               className="aspect-video w-full bg-black"
+              onLoad={() => setLoadedVideoId(activeVideo.id)}
             />
           </div>
         </div>

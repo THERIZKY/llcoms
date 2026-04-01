@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist_Mono, Manrope, Space_Grotesk } from "next/font/google";
+import { SiteHeaderSkeleton } from "@/components/loading-skeletons";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -36,7 +38,9 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <div className="min-h-screen text-foreground">
-            <SiteHeader />
+            <Suspense fallback={<SiteHeaderSkeleton />}>
+              <SiteHeader />
+            </Suspense>
             {children}
           </div>
         </ThemeProvider>

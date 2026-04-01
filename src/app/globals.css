@@ -167,3 +167,9 @@
     font-family: var(--font-space-grotesk);
   }
 }
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

@@ -1,12 +1,13 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { requireAdminUser } from "@/auth/session";
+import { AdminShellSkeleton } from "@/components/loading-skeletons";
 import { AdminShell } from "@/components/admin/admin-shell";
 
-export default async function AdminLayout({
-  children,
-}: {
+type AdminLayoutProps = {
   children: ReactNode;
-}) {
+};
+
+async function AdminLayoutContent({ children }: AdminLayoutProps) {
   const adminUser = await requireAdminUser();
 
   return (
@@ -16,5 +17,15 @@ export default async function AdminLayout({
     >
       {children}
     </AdminShell>
+  );
+}
+
+export default function AdminLayout({
+  children,
+}: AdminLayoutProps) {
+  return (
+    <Suspense fallback={<AdminShellSkeleton />}>
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </Suspense>
   );
 }
